@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from django.http import Http404
 
-# Create your views here.
 
+# Структура данных
 posts = [
     {
         'id': 0,
@@ -46,26 +47,27 @@ posts = [
 ]
 
 
+# Словарь для быстрого доступа к постам по id
+posts_dict = {post['id']: post for post in posts}
+
+
 def index(request):
-    template_name = 'blog/index.html'
+    """Отображает главную страницу с перечнем всех постов."""
     context = {'posts': reversed(posts)}
-    return render(request, template_name, context)
+    return render(request, 'blog/index.html', context)
 
 
-def post_detail(request, id):
-    template_name = 'blog/detail.html'
-    context = {'post': posts[id]}
-    return render(request, template_name, context)
+def post_detail(request, post_id):
+    """Отображает подробности одного поста по его id."""
+    post = posts_dict.get(post_id)
+    if post is None:
+        raise Http404('Пост не найден')
+
+    context = {'post': posts[post_id]}
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
-    template_name = 'blog/category.html'
-    filtered_posts = [
-        post for post in posts
-        if post['category'] == category_slug
-    ]
-    context = {
-        'category': category_slug,
-        'posts': filtered_posts
-    }
-    return render(request, template_name, context)
+    """Отображает страницу с постами, отфильтрованными по категории."""
+    context = {'category': category_slug}
+    return render(request, 'blog/category.html', context)

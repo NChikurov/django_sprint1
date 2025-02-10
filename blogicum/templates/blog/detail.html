@@ -1,7 +1,8 @@
+<!-- Страница выбранных для просмотра постов, расширяющая базовый шаблон. -->
 {% extends "base.html" %}
 
 {% block head_content %}
-  <title>{{ post.location }}. {{ post.date }}</title>
+  {{ post.location }}. {{ post.date }}
 {% endblock %}
 
 {% block main_content %}
