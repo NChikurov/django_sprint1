@@ -61,9 +61,9 @@ def post_detail(request, post_id):
     """Отображает подробности одного поста по его id."""
     post = posts_dict.get(post_id)
     if post is None:
-        raise Http404('Пост не найден')
+        raise Http404(f'Пост {post_id} не найден')
 
-    context = {'post': posts[post_id]}
+    context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
 
